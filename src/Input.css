@@ -1,0 +1,37 @@
+.a11y_input {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.a11y_input label {
+  flex-direction: column;
+  font-weight: 400;
+  font-variant: small-caps;
+  margin-bottom: 5px;
+  font-size: 1.4rem;
+  transition: all .2s;
+  text-align: left;
+}
+
+.a11y_input input {
+  width: 100%;
+  padding: .8rem;
+  padding-right: 2.4rem;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  border: 1px solid #ddd;
+  height: 34px;
+  transition: all .2s;
+}
+
+input[aria-invalid="true"] {
+  border-color: #D0021B;
+}
+
+.a11y_input__warning {
+  margin-top: 0.4rem;
+  font-size: 1.4rem;
+  color: #D0021B;
+  text-align: left;
+}
