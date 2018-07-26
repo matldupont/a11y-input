@@ -35,3 +35,9 @@ input[aria-invalid="true"] {
   color: #D0021B;
   text-align: left;
 }
+
+.a11y_input__warning_icon {
+  position: absolute;
+  right: 10px;
+  top: 27px;
+}

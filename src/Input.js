@@ -1,20 +1,15 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import './Input.css';
+import warning from './warning.svg';
 
 export default class Input extends React.Component {
-  constructor() {
-    super();
+  state = {
+    error: false,
+    message: '',
+  };
 
-    this.state = {
-      error: false,
-      message: '',
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.triggerValidation = this.triggerValidation.bind(this);
-    this.timer = {};
-  }
+  timer = {};
 
   componentDidMount() {
     if (this.props.value) {
@@ -28,43 +23,16 @@ export default class Input extends React.Component {
     }
   }
 
-  getClasses() {
-    if (this.state.error) {
-      return 'a11y_input--warning';
-    }
-    return '';
-  }
-
-  getValue() {
-    return this.props.value;
-  }
-
   setSuccessState(bool, message = '') {
     this.setState({
       error: !bool,
-      // success: bool,
       message,
     });
   }
 
-  focus() {
-    this.input.focus();
-  }
+  triggerValidation = (val) => {
+    if (val === undefined)  val = this.props.value;
 
-  handleChange(event) {
-    const val = event.target.value;
-
-    this.props.onChange(event);
-
-    this.throttle(() => {
-      this.triggerValidation(val);
-    });
-  }
-
-  triggerValidation(val) {
-    if (val === undefined) {
-      val = this.getValue();
-    }
     const check = this.isValid(val);
     let pass = true;
     let message = '';
@@ -81,52 +49,65 @@ export default class Input extends React.Component {
     }, 300);
   }
 
+  handleChange = (event) => {
+    const val = event.target.value;
+    this.props.onChange(event);
+
+    this.throttle(() => {
+      this.triggerValidation(val);
+    });
+  }
+
   isValid(value) {
     return this.props.validation.call(this, value);
   }
 
   render() {
-    const { error } = this.state;
+    const { error, message } = this.state;
     const {
       label,
-      bordered,
       type,
       id,
       disabled,
       required,
+      placeholder,
+      value,
     } = this.props;
 
-    const borderedCSS = bordered ? '' : 'a11y_input--borderless';
+    const requiredAsterisk = required && <strong aria-hidden="true"> *</strong>;
+
+    const warningCSS = error ? 'a11y_input--warning' : '';
 
     return (
-      <div className={`a11y_input ${this.getClasses()}`}>
+      <div className={`a11y_input ${warningCSS}`}>
         {
-          this.state.message.length > 0 &&
-          <div
-            id={`${id}-error`}
-            className="a11y_input__warning"
-            aria-live="assertive"
-            role="alert"
-          >{this.state.message}
-          </div>
+          message.length > 0 &&
+          [
+            <div
+              id={`${id}-error`}
+              className="a11y_input__warning"
+              aria-live="assertive"
+              role="alert"
+            >{message}
+            </div>,
+            <img className="a11y_input__warning_icon" alt="warning" src={warning} />,
+            ]
         }
-
-        <div>
-          <input
-            id={id}
-            type={type}
-            aria-required={required}
-            aria-invalid={error}
-            required={required}
-            disabled={disabled}
-            className={`${borderedCSS}`}
-            value={this.getValue()}
-            onChange={this.handleChange}
-            ref={(i) => { this.input = i; }}
-            aria-describedby={`${id}-error`}
-          />
-        </div>
-        <label htmlFor={id}>{label}</label>
+        <input
+          id={id}
+          type={type}
+          aria-required={required}
+          aria-invalid={error}
+          required={required}
+          disabled={disabled}
+          value={value}
+          onChange={this.handleChange}
+          ref={(i) => { this.input = i; }}
+          aria-describedby={`${id}-error`}
+          placeholder={placeholder}
+        ></input>
+        <label htmlFor={id}>{label}{requiredAsterisk}</label>
+        
       </div>
     );
   }
@@ -136,11 +117,11 @@ Input.defaultProps = {
   label: '',
   value: '',
   type: 'text',
-  bordered: true,
   disabled: false,
   onChange: () => {},
   validation: () => {},
   required: false,
+  placeholder: '',
 };
 
 Input.propTypes = {
@@ -151,9 +132,9 @@ Input.propTypes = {
     PropTypes.number,
   ]),
   type: PropTypes.string,
-  bordered: PropTypes.bool,
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
   validation: PropTypes.func,
   required: PropTypes.bool,
+  placeholder: PropTypes.string,
 };

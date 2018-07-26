@@ -5,7 +5,7 @@
   display: grid;
   grid-column-gap: 10px;
   grid-row-gap: 30px;
-  grid-template-columns: 1fr 1fr ;
+  grid-template-columns: 2fr 1fr ;
   grid-template-areas:
     "top top"
     "middle-left middle-right"

@@ -41,7 +41,7 @@
   justify-content: flex-end;
   align-items: center;
   font-size: 2rem;
-  padding-right: 15rem;
+  padding-right: 10%;
   top: 0;
   right: 0;
   width: 100%;
@@ -49,4 +49,5 @@
   background-color: #2d2b2b;
   color: #fdfdfd;
   box-shadow: 0 1rem 2rem rgba(50,50,50, 0.3);
+  z-index: 900;
 }
