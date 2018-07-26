@@ -1,0 +1,30 @@
+.input_grid {
+  max-width: 700px;
+  margin: 23rem auto;
+
+  display: grid;
+  grid-column-gap: 10px;
+  grid-row-gap: 30px;
+  grid-template-columns: 1fr 1fr ;
+  grid-template-areas:
+    "top top"
+    "middle-left middle-right"
+    "bottom bottom";
+
+}
+
+.input_grid__top {
+  grid-area: top;
+}
+
+.input_grid__middle--left {
+  grid-area: middle-left;
+}
+
+.input_grid__middle--right {
+  grid-area: middle-right;
+}
+
+.input_grid__bottom {
+  grid-area: bottom;
+}

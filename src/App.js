@@ -1,45 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Input from './Input';
+import Header from './Header';
+import InputGrid from './InputGrid';
+
 
 class App extends Component {
-  state = {
-    input1: '',
-  }
-
-  inputChangeHandler = (event) => {
-    const { id, value } = event.target;
-    this.setState({ 
-      [id]: value,
-    });
-  }
-
-  inputIsLongEnough = (val) => {
-    if (val.length < 3) {
-      return { pass: false, message: 'If I\'m hearing this my demo is going okay, I guess.' };
-    }
-    return { pass: true };
-  }
+  
 
   render() {
-    const { input1 } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Input 
-          id="input1"
-          label="input #1"
-          onChange={this.inputChangeHandler}
-          value={input1}
-          validation={this.inputIsLongEnough}
-        />
+        <Header />
+        <InputGrid />
       </div>
     );
   }
